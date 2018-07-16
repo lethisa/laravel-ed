@@ -144,7 +144,32 @@ Route::get('/', function () {
 //         // Post::where('is_admin', 0)->delete();
 //     });
 
-Route::get('/softDelete', function ()
+// soft delete
+// Route::get('/softDelete', function ()
+//     {
+//         Post::find(2)->delete();
+//     });
+
+// Route::get('/readSoftDelete', function ()
+//     {
+//         // $post = Post::find(1);
+//         // return $post;
+
+//         $post = Post::withTrashed()->where('id', 1)->get();
+//         return $post;
+
+//         // $post = Post::onlyTrashed()->where('is_admin', 0)->get();
+//         // return $post;
+//     });
+
+// restore delete
+// Route::get('/restore', function ()
+//     {
+//         Post::withTrashed()->where('is_admin', 0)->restore();
+//     });
+
+// permanent delete
+Route::get('/forceDelete', function ()
     {
-        Post::find(1)->delete();
+        Post::withTrashed()->where('id', 1)->forceDelete();
     });
