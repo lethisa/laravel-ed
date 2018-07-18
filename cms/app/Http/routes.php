@@ -1,6 +1,12 @@
 <?php
 
 use App\Post;
+use App\User;
+use App\Country;
+use App\Photo;
+use App\Tag;
+use App\Video;
+
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -169,7 +175,132 @@ Route::get('/', function () {
 //     });
 
 // permanent delete
-Route::get('/forceDelete', function ()
-    {
-        Post::withTrashed()->where('id', 1)->forceDelete();
-    });
+// Route::get('/forceDelete', function ()
+//     {
+//         // Post::withTrashed()->where('id', 1)->forceDelete();
+
+//         // Post::onlyTrashed()->where('is_admin', 0)->forceDelete();
+//     });
+
+
+// Eloquent Relationship
+// One to One
+// Route::get('/user/{id}/post', function ($id)
+//     {
+//         return User::find($id)->post->title;
+
+//     });
+
+// inverse relation
+// Route::get('/post/{id}/user', function ($id)
+//     {
+//         return Post::find($id)->user->name;
+//     });
+
+// One to Many
+// Route::get('/posts', function ()
+//     {
+//         $user = User::find(1);
+
+//         foreach($user->posts as $post)
+//         {
+//             echo $post->title;
+//         }
+//     });
+
+// Many to Many
+// Route::get('/user/{id}/role', function ($id)
+//     {
+//         $user = User::find($id)->roles()->orderBy('id', 'desc')->get();
+
+//         return $user;
+
+//         // foreach ($user->roles as $role) {
+//         //     return $role->name;
+//         // }
+//     });
+
+// Access Intermidiate Table / pivot
+// Route::get('/user/pivot', function ()
+//     {
+//         $user = User::find(1);
+
+//         foreach($user->roles as $role)
+//         {
+//             echo $role->pivot->created_at;
+//         }
+
+//     });
+
+// has many throught relation
+// Route::get('/user/country', function ()
+//     {
+//         $country = Country::find(2);
+
+//         foreach($country->posts as $post)
+//         {
+//             return $post->title;
+//         }
+//     });
+
+// Polymorphic Relations
+
+// Route::get('/user/photos', function ()
+//     {
+//         $user = User::find(1);
+
+//         foreach($user->photos as $photo)
+//         {
+//             echo $photo->path;
+//         }
+//     });
+
+// Route::get('/post/photos', function ()
+//     {
+//         $post = Post::find(2);
+
+//         foreach($post->photos as $photo)
+//         {
+//             echo $photo->path;
+//         }
+//     });
+
+// Polymorphic Inverse
+// Route::get('/photo/{id}/post', function ($id)
+//     {
+//         $photo = Photo::findOrFail($id);
+
+//         return $photo->imageable;
+//     });
+
+// Polymorphic Many to Many
+// Route::get('/post/tag', function ()
+//     {
+//         $post = Post::find(2);
+
+//         foreach($post->tags as $tag)
+//         {
+//             echo $tag->name;
+//         }
+//     });
+
+// Route::get('/tag/post', function ()
+//     {
+//         $tag = Tag::find(1);
+
+//         foreach($tag->posts as $post)
+//         {
+//             return $post->title;
+//         }
+
+//     });
+
+// Route::get('/tag/video', function ()
+//     {
+//         $tag = Tag::find(1);
+
+//         foreach($tag->videos as $video)
+//         {
+//             return $video->name;
+//         }
+//     });
