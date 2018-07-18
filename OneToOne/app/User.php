@@ -24,7 +24,7 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
-    public function ()
+    public function address()
     {
         return $this->hasOne('App\Address');
     }
