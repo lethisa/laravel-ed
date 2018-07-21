@@ -47,6 +47,25 @@ class PostsController extends Controller
      */
     public function store(CreatePostRequest $request)
     {
+
+        // upload file
+        $input = $request->all();
+        
+        if($file = $request->file('file')){
+            $name = $file->getClientOriginalName();
+
+            $file->move('images', $name);
+            $input['path'] = $name;
+        }
+
+        Post::create($input);
+        return redirect('/posts');
+
+        // file
+        // $file = $request->file('file');
+        // echo $file->getClientOriginalName();
+        // echo $file->getClientSize();
+
         // validation
         // $this->validate($request, [
         //     'title'=>'required|max:10'
@@ -57,8 +76,8 @@ class PostsController extends Controller
         // return $request->title;
 
         // save
-        Post::create($request->all());
-        return redirect('/posts');
+        // Post::create($request->all());
+        // return redirect('/posts');
 
         // OR
         // $input = $request->all();

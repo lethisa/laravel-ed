@@ -4,9 +4,10 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-
+use Carbon\Carbon;
 class Post extends Model
 {
+    public $directories = "/images/";
     use SoftDeletes;
 
     // protected $table = 'posts';
@@ -17,7 +18,8 @@ class Post extends Model
 
     protected $fillable = [
         'title',
-        'content'
+        'content',
+        'path'
     ];
 
     public function user()
@@ -40,5 +42,18 @@ class Post extends Model
     {
         return $query->orderBy('id', 'asc')->get();
     }
+
+    // accessor
+    public function getPathAttribute($value)
+    {
+        return $this->directories . $value;
+    }
+
+    // muttator
+    // public function setPathAttribute($value)
+    // {
+    //     $dateAt = Carbon::now();
+    //     $this->attributes['path'] = "img". $dateAt;
+    // }
     
 }
