@@ -304,3 +304,6 @@ Route::get('/', function () {
 //             return $video->name;
 //         }
 //     });
+
+// CRUD - form + validation
+Route::resource('/posts', 'PostsController');
