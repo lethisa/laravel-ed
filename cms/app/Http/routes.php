@@ -6,6 +6,8 @@ use App\Country;
 use App\Photo;
 use App\Tag;
 use App\Video;
+use Carbon\Carbon;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -304,6 +306,37 @@ Route::get('/', function () {
 //             return $video->name;
 //         }
 //     });
-
+   
 // CRUD - form + validation
 Route::resource('/posts', 'PostsController');
+    
+Route::get('dates', function () {
+    
+    $date = new DateTime('+1 week');
+
+    echo $date->format('m-d-Y');
+
+    // carbon
+    echo Carbon::now();
+    echo Carbon::now()->addDays(10)->diffForHumans();
+    echo Carbon::now()->subMonths(5)->diffForHumans();
+    echo Carbon::now()->yesterday()->diffForHumans();
+
+});
+
+// accessors
+Route::get('/getname', function () {
+    
+    $user = User::find(1);
+
+    echo $user->name;
+});
+
+// muttators
+Route::get('/setname', function () {
+    
+    $user = User::find(2);
+
+    $user->name = "putri";
+    $user->save();
+});
