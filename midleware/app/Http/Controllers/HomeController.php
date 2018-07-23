@@ -22,8 +22,33 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+
+     // session
+    public function index(Request $request)
     {
-        return view('home');
+        // set session
+        // $request->session()->put(['ada'=>'apa']);
+        // or
+        // session(['a'=>'b']);
+
+        // delete session
+        // $request->session()->forget('a');
+
+        //delete all
+        // $request->session()->flush();
+
+        // return session('a');
+
+        // return $request->session()->all();
+        
+        // return view('home');
+
+
+        // flash session
+        // $request->session()->flash('message', 'success');
+
+        return $request->session()->get('message');
+
+        // reflash + keep
     }
 }
