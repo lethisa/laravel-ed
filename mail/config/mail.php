@@ -55,7 +55,7 @@ return [
     |
     */
 
-    'from' => ['address' => null, 'name' => null],
+    'from' => ['address' => 'demo@m.cecakit.com', 'name' => 'Lethisa Putri'],
 
     /*
     |--------------------------------------------------------------------------

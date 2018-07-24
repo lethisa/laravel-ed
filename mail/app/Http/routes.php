@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Mail;
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -12,5 +13,17 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    // return view('welcome');
+
+    $data = [
+        'title'=>'Laravel',
+        'content'=>'This is Laravel'
+    ];
+
+    Mail::send('emails.test', $data, function($message)
+    {
+        $message->to('lethisaputri@gmail.com', 'Doni')->subject('Hai Mail');
+
+    });
+
 });
