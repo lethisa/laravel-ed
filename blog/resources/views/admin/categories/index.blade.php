@@ -30,7 +30,7 @@
     <thead>
         <tr>
         <th scope="col">ID</th>
-        <th scope="col">Category</th>
+        <th scope="col">Name</th>
         <th scope="col">Created</th>
         </tr>
     </thead>
@@ -41,8 +41,8 @@
         @foreach($categories as $category)
         <tr>
         <th scope="row">{{$category->id}}</th>
-        <td>{{$category->name}}</td>
-        <td>{{$category->created_at->diffForHumans()}}</td>
+        <td><a href="{{route('admin.categories.edit', $category->id)}}">{{$category->name}}</a></td>
+        <td>{{$category->created_at ? $category->created_at->diffForHumans() : 'no date'}}</td>
         </tr>
         @endforeach
     @endif
