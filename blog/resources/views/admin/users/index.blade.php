@@ -3,6 +3,11 @@
 
 @section('content')
 
+
+@if(Session::has('deleted_user'))
+  <p class="bg-danger">{{session('deleted_user')}}</p>
+@endif
+
 <h1>Users</h1>
 
 <table class="table table-striped">
@@ -25,8 +30,8 @@
     @foreach($users as $user)
     <tr>
       <th scope="row">{{$user->id}}</th>
-      <td><img height="50" src="{{$user->photo ? $user->photo->file : 'No Photo'}}" alt="image"></td>
-      <td>{{$user->name}}</td>
+      <td><img height="50" width="50" src="{{$user->photo ? $user->photo->file : 'http://placehold.it/400x400'}}" alt="image"></td>
+      <td><a href="{{route('admin.users.edit', $user->id)}}">{{$user->name}}</a></td>
       <td>{{$user->email}}</td>
       <td>{{$user->role->name}}</td>
       <td>{{$user->is_active == 1 ? 'Active' : 'Not Active'}}</td>
