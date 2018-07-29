@@ -1,122 +1,209 @@
 @extends('layouts.blog-post')
 
+
+
 @section('content')
 
-                   <!-- Blog Post -->
 
-                <!-- Title -->
-                <h1>{{$post->title}}</h1>
 
-                <!-- Author -->
-                <p class="lead">
-                    by <a href="#">{{$post->user->name}}</a>
-                </p>
+    <!-- Blog Post -->
 
-                <hr>
+    <!-- Title -->
+    <h1>{{$post->title}}</h1>
 
-                <!-- Date/Time -->
-                <p><span class="glyphicon glyphicon-time"></span> Posted on {{$post->created_at->diffForHumans()}}</p>
+    <!-- Author -->
+    <p class="lead">
+        by <a href="#">{{$post->user->name}}</a>
+    </p>
 
-                <hr>
+    <hr>
 
-                <!-- Preview Image -->
-                <img class="img-responsive" src="{{$post->photo->file}}" alt="">
+    <!-- Date/Time -->
+    <p><span class="glyphicon glyphicon-time"></span> Posted {{$post->created_at->diffForHumans()}}</p>
 
-                <hr>
+    <hr>
 
-                <!-- Post Content -->
-                <p>{{$post->body}}</p>
-                
+    <!-- Preview Image -->
+    <img class="img-responsive" src="{{$post->photo->file}}" alt="">
 
-                <hr>
+    <hr>
 
-                @if(Session::has('comment_message'))
-                    {{session('comment_message')}}
-                @endif
+    <!-- Post Content -->
 
-                <!-- Blog Comments -->
-                @if(Auth::check())
-                <!-- Comments Form -->
-                <div class="well">
+    <p>{{$post->body}}</p>
 
-                    {!! Form::open(['method'=>'POST', 'action'=>'PostCommentsController@store']) !!}
-                    {{csrf_field()}}
+    <hr>
 
-                    <input type="hidden" name="post_id" value="{{$post->id}}">
 
-                    <div class="form-group">
-                        {!! Form::label('body', 'Leave a Comment:') !!}
-                        {!! Form::textarea('body', null, ['class'=>'form-control', 'rows'=>3]) !!}
-                    </div>
+    @if(Session::has('comment_message'))
 
-                    <div class="form-group">
-                        {!! Form::submit('Submit Comment', ['class'=>'btn btn-primary']) !!}
-                    </div>
-                    
-                    {!! Form::close() !!}
+            {{session('comment_message')}}
 
-                </div>
-                @endif
 
-                <hr>
+       @endif
 
-                <!-- Posted Comments -->
+    <!-- Blog Comments -->
 
-                @if(count($comments) > 0)
 
-                    @foreach($comments as $comment)
+@if(Auth::check())
 
-                <!-- Comment -->
-                <div class="media">
-                    <a class="pull-left" href="#">
-                        <img height="64" width="64" class="media-object" src="{{$comment->photo}}" alt="image">
-                    </a>
-                    <div class="media-body">
-                        <h4 class="media-heading">{{$comment->author}}
-                            <small>{{$comment->created_at->diffForHumans()}}</small>
-                        </h4>
-                        <p>{{$comment->body}}</p>    
+    <!-- Comments Form -->
+    <div class="well">
+        <h4>Leave a Comment:</h4>
 
-                         <!-- Nested Comment -->
-                        <div class="media">
+
+        {!! Form::open(['method'=>'POST', 'action'=> 'PostCommentsController@store']) !!}
+
+
+              <input type="hidden" name="post_id" value="{{$post->id}}">
+
+
+             <div class="form-group">
+                 {!! Form::label('body', 'Body:') !!}
+                 {!! Form::textarea('body', null, ['class'=>'form-control','rows'=>3])!!}
+             </div>
+
+             <div class="form-group">
+                 {!! Form::submit('Submit comment', ['class'=>'btn btn-primary']) !!}
+             </div>
+        {!! Form::close() !!}
+
+
+    </div>
+
+
+@endif
+
+    <hr>
+
+    <!-- Posted Comments -->
+
+
+
+@if(count($comments) > 0)
+
+
+        @foreach($comments as $comment)
+
+    <!-- Comment -->
+    <div class="media">
+        <a class="pull-left" href="#">
+            <img height="64" class="media-object" src="{{Auth::user()->gravatar}}" alt="">
+        </a>
+        <div class="media-body">
+            <h4 class="media-heading">{{$comment->author}}
+                <small>{{$comment->created_at->diffForHumans()}}</small>
+            </h4>
+            <p>{{$comment->body}}</p>
+
+
+
+            @if(count($comment->replies) > 0)
+
+
+                  @foreach($comment->replies as $reply)
+
+
+                        @if($reply->is_active == 1)
+
+
+
+                        <!-- Nested Comment -->
+                        <div id="nested-comment" class=" media">
                             <a class="pull-left" href="#">
-                                <img class="media-object" src="http://placehold.it/64x64" alt="">
+                                <img height="64" class="media-object" src="{{$reply->photo}}" alt="">
                             </a>
                             <div class="media-body">
-                                <h4 class="media-heading">Nested Start Bootstrap
-                                    <small>August 25, 2014 at 9:30 PM</small>
+                                <h4 class="media-heading"{{$reply->author}}
+                                    <small>{{$reply->created_at->diffForHumans()}}</small>
                                 </h4>
-                                Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
+                                <p>{{$reply->body}}</p>
                             </div>
 
-                            {!! Form::open(['method'=>'POST', 'action'=>'CommentRepliesController@createReply']) !!}
-                            {{csrf_field()}}
 
-                            <input type="hidden" name="comment_id" value="{{$comment->id}}">
+                            <div class="comment-reply-container">
 
-                            <div class="form-group">
-                                {!! Form::label('body', 'Reply') !!}
-                                {!! Form::textarea('body', null, ['class'=>'form-control', 'rows'=>1]) !!}
-                            </div>
 
-                            <div class="form-group">
-                                {!! Form::submit('Reply', ['class'=>'btn btn-primary']) !!}
-                            </div>
-                            
-                            {!! Form::close() !!}
+                                <button class="toggle-reply btn btn-primary pull-right">Reply</button>
 
-                        </div>
-                        <!-- End Nested Comment -->
+
+                                <div class="comment-reply col-sm-6">
+
+
+                                        {!! Form::open(['method'=>'POST', 'action'=> 'CommentRepliesController@createReply']) !!}
+                                             <div class="form-group">
+
+                                                 <input type="hidden" name="comment_id" value="{{$comment->id}}">
+
+                                                 {!! Form::label('body', 'Body:') !!}
+                                                 {!! Form::textarea('body', null, ['class'=>'form-control','rows'=>1])!!}
+                                             </div>
+
+                                             <div class="form-group">
+                                                 {!! Form::submit('submit', ['class'=>'btn btn-primary']) !!}
+                                             </div>
+                                        {!! Form::close() !!}
+
+
+                                </div>
+
+                          </div>
+            <!-- End Nested Comment -->
+
 
                     </div>
-                </div>
 
-                    @endforeach
+                             @else
 
-                @endif
+
+                                 <h1 class="text-center">No Replies</h1>
+
+
+
+
+                            @endif
+
+                     @endforeach
+
+            @endif
+
+
+
+
+
+
+        </div>
+    </div>
+
+     @endforeach
+
+@endif
+
+
 
 @stop
 
 
+@section('scripts')
 
-                       
+    <script>
+
+        $(".comment-reply-container .toggle-reply").click(function(){
+
+
+            $(this).next().slideToggle("slow");
+
+
+
+
+        });
+
+
+
+
+    </script>
+
+
+
+@stop
+

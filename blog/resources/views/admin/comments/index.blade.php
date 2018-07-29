@@ -16,6 +16,8 @@
       <th scope="col">Email</th>
       <th scope="col">Post Related</th>
       <th scope="col">Created</th>
+      <th scope="col">Reply</th>
+      
     </tr>
   </thead>
   <tbody>
@@ -30,7 +32,9 @@
       <th scope="row">{{$comment->email}}</th>
       <th scope="row"><a href="{{route('home.post', $comment->post->id)}}">View Post</a></th>
       <td>{{$comment->created_at ? $comment->created_at->diffForHumans() : 'no date'}}</td>
-      
+      <td>
+        <a href="{{route('admin.comment.replies.show', $comment->id)}}">Reply</a>
+      </td>
       <td>
 
         @if($comment->is_active == 1)
