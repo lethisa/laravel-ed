@@ -149,7 +149,7 @@ return [
         Illuminate\View\ViewServiceProvider::class,
         // forms and html
         Collective\Html\HtmlServiceProvider::class,
-
+        
         /*
          * Application Service Providers...
          */
