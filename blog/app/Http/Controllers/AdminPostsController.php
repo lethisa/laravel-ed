@@ -106,6 +106,7 @@ class AdminPostsController extends Controller
     public function update(Request $request, $id)
     {
         $input = $request->all();
+        $user = Auth::user();
 
         if($file = $request->file('photo_id'))
         {
@@ -116,7 +117,8 @@ class AdminPostsController extends Controller
             $input['photo_id'] = $photo->id;
         }
 
-        Auth::user()->posts()->whereId($id)->first()->update($input);
+        // Auth::user()->posts()->whereId($id)->first()->update($input);
+        Post::whereId($id)->first()->update($input);
         return redirect('/admin/posts');
 
         // return $request->all();
@@ -141,7 +143,8 @@ class AdminPostsController extends Controller
     public function post($id)       
     {
         $post = Post::findOrFail($id);
+        $comments = $post->comments()->whereIsActive(1)->get();
 
-        return view('post', compact('post'));
+        return view('post', compact('post', 'comments'));
     }
 }
